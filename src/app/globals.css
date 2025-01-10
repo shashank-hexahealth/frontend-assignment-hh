@@ -25,3 +25,11 @@ body {
     text-wrap: balance;
   }
 }
+
+.input-box {
+  @apply border border-solid border-slate-200 rounded w-96 p-2
+}
+
+.error-msg {
+  @apply text-red-400 text-sm
+}
