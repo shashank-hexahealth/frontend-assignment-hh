@@ -2,7 +2,8 @@ import React from "react";
 
 export default function Spinner({ size = 48, thickness = "1.5" }) {
   return (
-    <div id="spinner">
+    <div id="spinner" className="flex flex-col items-center justify-center">
+      <p>Please wait...</p>
       <svg viewBox="0 0 24 24" height={size} className="svg-class">
         <circle
           cx="12"

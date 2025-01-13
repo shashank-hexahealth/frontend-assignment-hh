@@ -7,9 +7,18 @@ export default function Home() {
         <div className="flex gap-4 items-center flex-col">
           <p className="text-lg">HexaHealth</p>
           <div>
-            <Link href="/book-appoinment" className="bg-red-100 p-1 px-2 rounded mr-2">Book Appoinment</Link>
-            <Link href="/check-services" className="bg-red-100 p-1 px-2 rounded">Check Services</Link>
-
+            <Link
+              href="/book-appoinment"
+              className="bg-red-100 hover:bg-red-200 px-5 py-2.5 rounded-lg mr-2"
+            >
+              Book Appoinment
+            </Link>
+            <Link
+              href="/check-services"
+              className="bg-red-100 hover:bg-red-200 px-5 py-2.5 rounded-lg"
+            >
+              Check Services
+            </Link>
           </div>
         </div>
       </main>

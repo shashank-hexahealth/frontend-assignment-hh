@@ -44,10 +44,6 @@ body {
 }
 
 
-#spinner::before {
-  content: "Please wait...";
-}
-
 #spinner svg {
   left: 0;
   width: 50px;

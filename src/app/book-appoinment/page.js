@@ -2,12 +2,13 @@
 import React from "react";
 import Link from "next/link";
 import Card from "../components/Card";
-import { ToastContainer, toast } from "react-toastify";
-import Spinner from "../components/Spinner";
+import SubmissionSuccess from "../components/SubmissionSuccess";
 
 export default function BookAppoinmentPage() {
   const [userType, setUserType] = React.useState("doctor");
   const [loading, setLoading] = React.useState(false);
+  const [isSubmissionSuccessfull, setIsSubmissionSuccessfull] =
+    React.useState(false);
   const [formValues, setFormValues] = React.useState({
     name: "",
     email: "",
@@ -91,7 +92,7 @@ export default function BookAppoinmentPage() {
       setLoading(true);
       setTimeout(() => {
         setLoading(false);
-        toast.success("Form Successfully Submitted");
+        setIsSubmissionSuccessfull(true);
       }, 500);
       setFormValues({
         name: "",
@@ -109,13 +110,20 @@ export default function BookAppoinmentPage() {
 
   return (
     <div>
-      <Link href="/">Dashboard</Link>
+      <div className="mt-4">
+        <Link
+          href="/"
+          className="bg-red-100 hover:bg-red-200 px-5 py-2.5 rounded-lg"
+        >
+          Dashboard
+        </Link>
+      </div>
       <div className="flex gap-4 items-center justify-center mb-8">
-        <div>
-          <Card>
-            {loading ? (
-              <Spinner />
-            ) : (
+        <Card>
+          {isSubmissionSuccessfull ? (
+            <SubmissionSuccess />
+          ) : (
+            <fieldset disabled={loading}>
               <form className="text-[18px]" onSubmit={handleSubmit}>
                 <div className="mb-4">
                   <select
@@ -279,18 +287,38 @@ export default function BookAppoinmentPage() {
                 )}
                 <div>
                   <button
+                    disabled={loading}
                     type="submit"
-                    className="w-96 bg-teal-400 rounded p-2 mt-4"
+                    className={`w-96 rounded px-5 py-2.5 mt-4 ${
+                      loading ? "bg-teal-300" : "bg-teal-400"
+                    }`}
                   >
-                    Submit
+                    <span className="flex items-center justify-center gap-2">
+                      {loading ? "Submitting..." : "Submit"}
+                      {loading && (
+                        <svg
+                          viewBox="0 0 24 24"
+                          height={20}
+                          className="svg-class"
+                        >
+                          <circle
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            strokeWidth={1}
+                            pathLength="100"
+                            className="circle"
+                          />
+                        </svg>
+                      )}
+                    </span>
                   </button>
                 </div>
               </form>
-            )}
-          </Card>
-        </div>
+            </fieldset>
+          )}
+        </Card>
       </div>
-      <ToastContainer />
     </div>
   );
 }
