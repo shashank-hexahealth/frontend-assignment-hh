@@ -33,3 +33,52 @@ body {
 .error-msg {
   @apply text-red-400 text-sm
 }
+
+.circle {
+  stroke-dasharray: 100;
+  animation: dash 1.5s infinite;
+  stroke-linecap: round;
+  transform-origin: center;
+  stroke: #424242;
+  fill: none;
+}
+
+
+#spinner::before {
+  content: "Please wait...";
+}
+
+#spinner svg {
+  left: 0;
+  width: 50px;
+  height: 50px;
+  margin: auto;
+}
+
+.svg-class {
+  animation: rotate 2s infinite linear;
+}
+
+@keyframes dash {
+  0% {
+    stroke-dashoffset: 90;
+    transform: rotate(0deg);
+  }
+  50% {
+    stroke-dashoffset: 20;
+    transform: rotate(45deg);
+  }
+  100% {
+    stroke-dashoffset: 90;
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
