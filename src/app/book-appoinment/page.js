@@ -2,58 +2,109 @@
 import React from "react";
 import Link from "next/link";
 import Card from "../components/Card";
-import { ErrorMessage, Field, Form, Formik } from "formik";
 import { ToastContainer, toast } from "react-toastify";
 import Spinner from "../components/Spinner";
 
 export default function BookAppoinmentPage() {
   const [userType, setUserType] = React.useState("doctor");
   const [loading, setLoading] = React.useState(false);
+  const [formValues, setFormValues] = React.useState({
+    name: "",
+    email: "",
+    mobile: "",
+    experience: "",
+    speciality: "",
+    hospitalName: "",
+    address: "",
+    hospitalNumber: "",
+    departments: "",
+  });
+  const [errors, setErrors] = React.useState({});
 
   const validate = (values) => {
     const errors = {};
     if (userType === "doctor") {
       if (!values.name) {
-        errors.name = "Please enter name";
+        errors.name = "Required field";
       }
       if (!values.email) {
-        errors.email = "Email required";
+        errors.email = "Required field";
       } else if (
         !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
       ) {
         errors.email = "Invalid email address";
       }
       if (!values.mobile) {
-        errors.mobile = "Mobile number is required";
+        errors.mobile = "Required field";
       } else if (!/^[6-9]\d{9}$/.test(values.mobile)) {
         errors.mobile =
           "Enter a valid 10-digit Mobile number starting with 6-9";
       } else if (/^(\d)\1{9}$/.test(values.mobile)) {
         // Check for repeated digits like 1111111111
-        errors.mobile =
-          "Mobile number cannot have all digits the same";
-      } 
+        errors.mobile = "Mobile number cannot have all digits the same";
+      }
       if (!values.experience) {
-        errors.experience = "Please enter experience";
+        errors.experience = "Required field";
       }
       if (!values.speciality) {
-        errors.speciality = "Please enter speciality";
+        errors.speciality = "Required field";
       }
     } else if (userType === "hospital") {
       if (!values.hospitalName) {
-        errors.hospitalName = "Please enter hospital name";
+        errors.hospitalName = "Required field";
       }
       if (!values.address) {
-        errors.address = "Please enter address";
+        errors.address = "Required field";
       }
       if (!values.hospitalNumber) {
-        errors.hospitalNumber = "Please enter hospital number";
+        errors.hospitalNumber = "Required field";
       }
       if (!values.departments) {
-        errors.departments = "Please enter department";
+        errors.departments = "Required field";
       }
     }
     return errors;
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormValues({
+      ...formValues,
+      [name]: value,
+    });
+
+    if (errors[name]) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: "",
+      }));
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const validationErrors = validate(formValues);
+    setErrors(validationErrors);
+
+    if (Object.keys(validationErrors).length === 0) {
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+        toast.success("Form Successfully Submitted");
+      }, 500);
+      setFormValues({
+        name: "",
+        email: "",
+        mobile: "",
+        experience: "",
+        speciality: "",
+        hospitalName: "",
+        address: "",
+        hospitalNumber: "",
+        departments: "",
+      });
+    }
   };
 
   return (
@@ -65,196 +116,176 @@ export default function BookAppoinmentPage() {
             {loading ? (
               <Spinner />
             ) : (
-              <Formik
-                initialValues={
-                  userType === "doctor"
-                    ? {
+              <form className="text-[18px]" onSubmit={handleSubmit}>
+                <div className="mb-4">
+                  <select
+                    name="userType"
+                    onChange={(e) => {
+                      setUserType(e.target.value);
+                      setErrors({});
+                      setFormValues({
+                        ...formValues,
                         name: "",
                         email: "",
                         mobile: "",
                         experience: "",
                         speciality: "",
-                      }
-                    : {
                         hospitalName: "",
                         address: "",
                         hospitalNumber: "",
                         departments: "",
-                      }
-                }
-                enableReinitialize={true}
-                validate={validate}
-                onSubmit={(values) => {
-                  setLoading(true);
-                  setTimeout(() => {
-                    setLoading(false);
-                    toast.success("Form Successfully Submitted");
-                  }, 500);
-                }}
-              >
-                {({ setFieldValue, setErrors, handleChange }) => (
-                  <Form className="text-[18px]">
-                    <div className="mb-4">
-                      <Field
-                        as="select"
-                        name="userType"
-                        onChange={(e) => {
-                          setUserType(e.target.value);
-                          setErrors({});
-                        }}
-                        className="input-box !px-1"
-                      >
-                        <option value="doctor">Doctor</option>
-                        <option value="hospital">Hospital</option>
-                      </Field>
-                    </div>
-                    {userType === "doctor" ? (
-                      <div className="flex flex-col gap-4 w-full">
-                        <div>
-                          <Field
-                            type="text"
-                            name="name"
-                            placeholder="Name"
-                            className="input-box"
-                            onChange={(e) => {
-                              const inputValue = e.target.value;
-                              if (/^[a-zA-Z\s]*$/.test(inputValue)) {
-                                handleChange(e);
-                              }
-                            }}
-                          />
-                          <ErrorMessage
-                            name="name"
-                            component="div"
-                            className="error-msg"
-                          />
-                        </div>
-                        <div>
-                          <Field
-                            type="email"
-                            name="email"
-                            placeholder="Email"
-                            className="input-box"
-                          />
-                          <ErrorMessage
-                            name="email"
-                            component="div"
-                            className="error-msg"
-                          />
-                        </div>
-                        <div>
-                          <Field
-                            type="text"
-                            name="mobile"
-                            placeholder="Mobile Number"
-                            className="input-box"
-                            onChange={(e) => {
-                              const value = e.target.value;
-                              if (/^\d*$/.test(value) && value.length <= 10) {
-                                handleChange(e);
-                              }
-                            }}
-                          />
-                          <ErrorMessage
-                            name="mobile"
-                            component="div"
-                            className="error-msg"
-                          />
-                        </div>
-                        <div>
-                          <Field
-                            type="text"
-                            name="experience"
-                            placeholder="Experience"
-                            className="input-box"
-                          />
-                          <ErrorMessage
-                            name="experience"
-                            component="div"
-                            className="error-msg"
-                          />
-                        </div>
-                        <div>
-                          <Field
-                            type="text"
-                            name="speciality"
-                            placeholder="Speciality"
-                            className="input-box"
-                          />
-                          <ErrorMessage
-                            name="speciality"
-                            component="div"
-                            className="error-msg"
-                          />
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="flex flex-col gap-4 w-full">
-                        <div>
-                          <Field
-                            type="text"
-                            name="hospitalName"
-                            placeholder="Hospital Name"
-                            className="input-box"
-                          />
-                          <ErrorMessage
-                            name="hospitalName"
-                            component="div"
-                            className="error-msg"
-                          />
-                        </div>
-                        <div>
-                          <Field
-                            type="text"
-                            name="address"
-                            placeholder="Hospital Address"
-                            className="input-box"
-                          />
-                          <ErrorMessage
-                            name="address"
-                            component="div"
-                            className="error-msg"
-                          />
-                        </div>
-                        <div>
-                          <Field
-                            type="text"
-                            name="hospitalNumber"
-                            placeholder="Hospital Number"
-                            className="input-box"
-                          />
-                          <ErrorMessage
-                            name="hospitalNumber"
-                            component="div"
-                            className="error-msg"
-                          />
-                        </div>
-                        <div>
-                          <Field
-                            type="text"
-                            name="departments"
-                            placeholder="departments"
-                            className="input-box"
-                          />
-                          <ErrorMessage
-                            name="departments"
-                            component="div"
-                            className="error-msg"
-                          />
-                        </div>
-                      </div>
-                    )}
+                      });
+                    }}
+                    className="input-box !px-1"
+                    value={userType}
+                  >
+                    <option value="doctor">Doctor</option>
+                    <option value="hospital">Hospital</option>
+                  </select>
+                </div>
+                {userType === "doctor" ? (
+                  <div className="flex flex-col gap-4 w-full">
                     <div>
-                      <button
-                        type="submit"
-                        className="w-96 bg-teal-400 rounded p-2 mt-4"
-                      >
-                        Submit
-                      </button>
+                      <input
+                        type="text"
+                        name="name"
+                        placeholder="Name*"
+                        className="input-box"
+                        value={formValues.name}
+                        onChange={(e) => {
+                          const inputValue = e.target.value;
+                          if (/^[a-zA-Z\s]*$/.test(inputValue)) {
+                            handleChange(e);
+                          }
+                        }}
+                      />
+                      {errors.name && (
+                        <div className="error-msg">{errors.name}</div>
+                      )}
                     </div>
-                  </Form>
+                    <div>
+                      <input
+                        type="email"
+                        name="email"
+                        placeholder="Email*"
+                        className="input-box"
+                        value={formValues.email}
+                        onChange={handleChange}
+                      />
+                      {errors.email && (
+                        <div className="error-msg">{errors.email}</div>
+                      )}
+                    </div>
+                    <div>
+                      <input
+                        type="text"
+                        name="mobile"
+                        placeholder="Mobile Number*"
+                        className="input-box"
+                        value={formValues.mobile}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          if (/^\d*$/.test(value) && value.length <= 10) {
+                            handleChange(e);
+                          }
+                        }}
+                      />
+                      {errors.mobile && (
+                        <div className="error-msg">{errors.mobile}</div>
+                      )}
+                    </div>
+                    <div>
+                      <input
+                        type="text"
+                        name="experience"
+                        placeholder="Experience*"
+                        className="input-box"
+                        value={formValues.experience}
+                        onChange={handleChange}
+                      />
+                      {errors.experience && (
+                        <div className="error-msg">{errors.experience}</div>
+                      )}
+                    </div>
+                    <div>
+                      <input
+                        type="text"
+                        name="speciality"
+                        placeholder="Speciality*"
+                        className="input-box"
+                        value={formValues.speciality}
+                        onChange={handleChange}
+                      />
+                      {errors.speciality && (
+                        <div className="error-msg">{errors.speciality}</div>
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex flex-col gap-4 w-full">
+                    <div>
+                      <input
+                        type="text"
+                        name="hospitalName"
+                        placeholder="Hospital Name*"
+                        className="input-box"
+                        value={formValues.hospitalName}
+                        onChange={handleChange}
+                      />
+                      {errors.hospitalName && (
+                        <div className="error-msg">{errors.hospitalName}</div>
+                      )}
+                    </div>
+                    <div>
+                      <input
+                        type="text"
+                        name="address"
+                        placeholder="Hospital Address*"
+                        className="input-box"
+                        value={formValues.address}
+                        onChange={handleChange}
+                      />
+                      {errors.address && (
+                        <div className="error-msg">{errors.address}</div>
+                      )}
+                    </div>
+                    <div>
+                      <input
+                        type="text"
+                        name="hospitalNumber"
+                        placeholder="Hospital Number*"
+                        className="input-box"
+                        value={formValues.hospitalNumber}
+                        onChange={handleChange}
+                      />
+                      {errors.hospitalNumber && (
+                        <div className="error-msg">{errors.hospitalNumber}</div>
+                      )}
+                    </div>
+                    <div>
+                      <input
+                        type="text"
+                        name="departments"
+                        placeholder="Departments*"
+                        className="input-box"
+                        value={formValues.departments}
+                        onChange={handleChange}
+                      />
+                      {errors.departments && (
+                        <div className="error-msg">{errors.departments}</div>
+                      )}
+                    </div>
+                  </div>
                 )}
-              </Formik>
+                <div>
+                  <button
+                    type="submit"
+                    className="w-96 bg-teal-400 rounded p-2 mt-4"
+                  >
+                    Submit
+                  </button>
+                </div>
+              </form>
             )}
           </Card>
         </div>
