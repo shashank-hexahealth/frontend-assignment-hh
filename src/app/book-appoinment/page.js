@@ -3,13 +3,14 @@ import React from "react";
 import Link from "next/link";
 import Card from "../components/Card";
 import SubmissionSuccess from "../components/SubmissionSuccess";
+import Spinner from "../components/Spinner";
 
 export default function BookAppoinmentPage() {
-  const [userType, setUserType] = React.useState("doctor");
   const [loading, setLoading] = React.useState(false);
   const [isSubmissionSuccessfull, setIsSubmissionSuccessfull] =
     React.useState(false);
   const [formValues, setFormValues] = React.useState({
+    userType: "doctor",
     name: "",
     email: "",
     mobile: "",
@@ -24,7 +25,7 @@ export default function BookAppoinmentPage() {
 
   const validate = (values) => {
     const errors = {};
-    if (userType === "doctor") {
+    if (values.userType === "doctor") {
       if (!values.name) {
         errors.name = "Required field";
       }
@@ -50,7 +51,7 @@ export default function BookAppoinmentPage() {
       if (!values.speciality) {
         errors.speciality = "Required field";
       }
-    } else if (userType === "hospital") {
+    } else if (values.userType === "hospital") {
       if (!values.hospitalName) {
         errors.hospitalName = "Required field";
       }
@@ -108,6 +109,31 @@ export default function BookAppoinmentPage() {
     }
   };
 
+  const handleUserTypeChange = (e) => {
+    const newUserType = e.target.value;
+    setFormValues((prevFormData) => {
+      const resetData =
+        newUserType === "doctor"
+          ? {
+              userType: newUserType,
+              name: "",
+              email: "",
+              mobile: "",
+              experience: "",
+              speciality: "",
+            }
+          : {
+              userType: newUserType,
+              hospitalName: "",
+              address: "",
+              hospitalNumber: "",
+              departments: "",
+            };
+      return { ...prevFormData, ...resetData };
+    });
+    setErrors({});
+  };
+
   return (
     <div>
       <div className="mt-4">
@@ -128,30 +154,15 @@ export default function BookAppoinmentPage() {
                 <div className="mb-4">
                   <select
                     name="userType"
-                    onChange={(e) => {
-                      setUserType(e.target.value);
-                      setErrors({});
-                      setFormValues({
-                        ...formValues,
-                        name: "",
-                        email: "",
-                        mobile: "",
-                        experience: "",
-                        speciality: "",
-                        hospitalName: "",
-                        address: "",
-                        hospitalNumber: "",
-                        departments: "",
-                      });
-                    }}
+                    onChange={handleUserTypeChange}
                     className="input-box !px-1"
-                    value={userType}
+                    value={formValues.userType}
                   >
                     <option value="doctor">Doctor</option>
                     <option value="hospital">Hospital</option>
                   </select>
                 </div>
-                {userType === "doctor" ? (
+                {formValues.userType === "doctor" ? (
                   <div className="flex flex-col gap-4 w-full">
                     <div>
                       <input
@@ -295,22 +306,7 @@ export default function BookAppoinmentPage() {
                   >
                     <span className="flex items-center justify-center gap-2">
                       {loading ? "Submitting..." : "Submit"}
-                      {loading && (
-                        <svg
-                          viewBox="0 0 24 24"
-                          height={20}
-                          className="svg-class"
-                        >
-                          <circle
-                            cx="12"
-                            cy="12"
-                            r="10"
-                            strokeWidth={1}
-                            pathLength="100"
-                            className="circle"
-                          />
-                        </svg>
-                      )}
+                      {loading && <Spinner />}
                     </span>
                   </button>
                 </div>

@@ -1,19 +1,16 @@
 import React from "react";
 
-export default function Spinner({ size = 48, thickness = "1.5" }) {
+export default function Spinner() {
   return (
-    <div id="spinner" className="flex flex-col items-center justify-center">
-      <p>Please wait...</p>
-      <svg viewBox="0 0 24 24" height={size} className="svg-class">
-        <circle
-          cx="12"
-          cy="12"
-          r="10"
-          strokeWidth={thickness}
-          pathLength="100"
-          className="circle"
-        />
-      </svg>
-    </div>
+    <svg viewBox="0 0 24 24" height={20} className="svg-class">
+      <circle
+        cx="12"
+        cy="12"
+        r="10"
+        strokeWidth={1}
+        pathLength="100"
+        className="circle"
+      />
+    </svg>
   );
 }
