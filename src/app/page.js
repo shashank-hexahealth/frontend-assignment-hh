@@ -1,4 +1,4 @@
-import Link from "next/link";
+import LinkButton from "./components/LinkButton";
 
 export default function Home() {
   return (
@@ -7,18 +7,8 @@ export default function Home() {
         <div className="flex gap-4 items-center flex-col">
           <p className="text-lg">HexaHealth</p>
           <div>
-            <Link
-              href="/book-appoinment"
-              className="bg-red-100 hover:bg-red-200 px-5 py-2.5 rounded-lg mr-2"
-            >
-              Book Appoinment
-            </Link>
-            <Link
-              href="/check-services"
-              className="bg-red-100 hover:bg-red-200 px-5 py-2.5 rounded-lg"
-            >
-              Check Services
-            </Link>
+            <LinkButton navigateTo= "/book-appoinment" className= "mr-2" label="Book Appoinment"/>
+            <LinkButton navigateTo= "/check-services" label="Check Services"/>
           </div>
         </div>
       </main>

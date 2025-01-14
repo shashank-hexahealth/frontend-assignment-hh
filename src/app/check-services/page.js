@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
-import Link from "next/link";
 import Modal from "../components/Modal";
+import LinkButton from "../components/LinkButton";
 
 export default function CheckServices() {
   const [isSurgeryCostModalOpen, setIsSurgeryCostModalOpen] =
@@ -12,12 +12,7 @@ export default function CheckServices() {
   return (
     <>
       <div className="mt-4">
-        <Link
-          href="/"
-          className="bg-red-100 hover:bg-red-200 px-5 py-2.5 rounded-lg"
-        >
-          Dashboard
-        </Link>
+        <LinkButton navigateTo="/" label="Dashboard" />
       </div>
       <div className="flex gap-4 items-center justify-center mb-8">
         <button

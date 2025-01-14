@@ -1,16 +1,17 @@
 "use client";
 import React from "react";
-import Link from "next/link";
 import Card from "../components/Card";
 import SubmissionSuccess from "../components/SubmissionSuccess";
 import Spinner from "../components/Spinner";
+import { DOCTOR } from "../utils/Constants";
+import LinkButton from "../components/LinkButton";
 
 export default function BookAppoinmentPage() {
   const [loading, setLoading] = React.useState(false);
   const [isSubmissionSuccessfull, setIsSubmissionSuccessfull] =
     React.useState(false);
   const [formValues, setFormValues] = React.useState({
-    userType: "doctor",
+    userType: DOCTOR,
     name: "",
     email: "",
     mobile: "",
@@ -25,7 +26,7 @@ export default function BookAppoinmentPage() {
 
   const validate = (values) => {
     const errors = {};
-    if (values.userType === "doctor") {
+    if (values.userType === DOCTOR) {
       if (!values.name) {
         errors.name = "Required field";
       }
@@ -113,7 +114,7 @@ export default function BookAppoinmentPage() {
     const newUserType = e.target.value;
     setFormValues((prevFormData) => {
       const resetData =
-        newUserType === "doctor"
+        newUserType === DOCTOR
           ? {
               userType: newUserType,
               name: "",
@@ -137,12 +138,7 @@ export default function BookAppoinmentPage() {
   return (
     <div>
       <div className="mt-4">
-        <Link
-          href="/"
-          className="bg-red-100 hover:bg-red-200 px-5 py-2.5 rounded-lg"
-        >
-          Dashboard
-        </Link>
+        <LinkButton navigateTo="/" label="Dashboard" />
       </div>
       <div className="flex gap-4 items-center justify-center mb-8">
         <Card>
@@ -158,11 +154,11 @@ export default function BookAppoinmentPage() {
                     className="input-box !px-1"
                     value={formValues.userType}
                   >
-                    <option value="doctor">Doctor</option>
+                    <option value={DOCTOR}>Doctor</option>
                     <option value="hospital">Hospital</option>
                   </select>
                 </div>
-                {formValues.userType === "doctor" ? (
+                {formValues.userType === DOCTOR ? (
                   <div className="flex flex-col gap-4 w-full">
                     <div>
                       <input
