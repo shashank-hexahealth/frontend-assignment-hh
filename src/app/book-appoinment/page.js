@@ -320,7 +320,7 @@ export default function BookAppoinmentPage() {
                     disabled={loading}
                     type="submit"
                     className={`w-96 rounded px-5 py-2.5 mt-4 ${
-                      loading ? "bg-teal-300" : "bg-teal-400"
+                      loading ? "bg-teal-300" : "bg-teal-400 hover:bg-teal-500"
                     }`}
                   >
                     <span className="flex items-center justify-center gap-2">
