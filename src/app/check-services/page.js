@@ -5,6 +5,7 @@ import LinkButton from "../components/LinkButton";
 import DefaultButton from "../components/DefaultButton";
 
 export default function CheckServices() {
+  // State hooks to control the visibility of the modals
   const [isSurgeryCostModalOpen, setIsSurgeryCostModalOpen] =
     React.useState(false);
   const [isInsuranceCoverageModalOpen, setIsInsuranceCoverageModalOpen] =
@@ -31,6 +32,7 @@ export default function CheckServices() {
           }}
           className="text-white !bg-blue-700 hover:!bg-blue-800"
         />
+        {/* Modal to check surgery cost */}
         <Modal
           isOpen={isSurgeryCostModalOpen}
           setIsOpen={setIsSurgeryCostModalOpen}
@@ -38,6 +40,7 @@ export default function CheckServices() {
           buttonLable="Check Now"
           queryType="surgery"
         />
+        {/* Modal to check insurance coverage */}
         <Modal
           isOpen={isInsuranceCoverageModalOpen}
           setIsOpen={setIsInsuranceCoverageModalOpen}
