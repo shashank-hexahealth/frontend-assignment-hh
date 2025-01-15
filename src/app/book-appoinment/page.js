@@ -213,12 +213,13 @@ export default function BookAppoinmentPage() {
                         <div className="error-msg">{errors.email}</div>
                       )}
                     </div>
-                    <div>
+                    <div className="flex justify-between items-center input-box">
+                      <span className="bg-slate-200 text-base rounded p-0.5 mr-2">+91</span>
                       <input
                         type="text"
                         name="mobile"
                         placeholder="Mobile Number*"
-                        className="input-box"
+                        className="w-full outline-none"
                         value={formValues.mobile}
                         onChange={(e) => {
                           const value = e.target.value;

@@ -27,7 +27,7 @@ body {
 }
 
 .input-box {
-  @apply border border-solid border-slate-200 rounded w-96 p-2
+  @apply border border-solid border-slate-200 rounded w-96 p-2 outline-none
 }
 
 .link-cls{
