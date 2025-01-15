@@ -5,6 +5,7 @@ import SubmissionSuccess from "../components/SubmissionSuccess";
 import Spinner from "../components/Spinner";
 import { DOCTOR, HOSPITAL } from "../utils/Constants";
 import LinkButton from "../components/LinkButton";
+import ErrorComponent from "../components/ErrorComponent";
 
 export default function BookAppoinmentPage() {
   // State hooks to manage loading, form submission status, errors and form data
@@ -24,6 +25,8 @@ export default function BookAppoinmentPage() {
     hospitalNumber: "",
     departments: "",
   });
+
+  const [isStatusCode200, setIstatusCode200] = React.useState(true);
 
   // Function to validate form fields based on the userType (Doctor/Hospital)
   const validate = (values) => {
@@ -104,22 +107,26 @@ export default function BookAppoinmentPage() {
     if (Object.keys(validationErrors).length === 0) {
       setLoading(true);
       setTimeout(() => {
-        setLoading(false);
-        setIsSubmissionSuccessfull(true);
+        if (isStatusCode200) {
+          setLoading(false);
+          setIsSubmissionSuccessfull(true);
+          // Reset the form after successfull submission
+          setFormValues({
+            name: "",
+            email: "",
+            mobile: "",
+            experience: "",
+            speciality: "",
+            hospitalName: "",
+            address: "",
+            hospitalNumber: "",
+            departments: "",
+          });
+        } else {
+          setLoading(false);
+          setIstatusCode200(false)
+        }
       }, 500);
-
-      // Reset the form after successfull submission
-      setFormValues({
-        name: "",
-        email: "",
-        mobile: "",
-        experience: "",
-        speciality: "",
-        hospitalName: "",
-        address: "",
-        hospitalNumber: "",
-        departments: "",
-      });
     }
   };
 
@@ -160,6 +167,7 @@ export default function BookAppoinmentPage() {
             <SubmissionSuccess />
           ) : (
             <fieldset disabled={loading}>
+              <ErrorComponent showError={isStatusCode200} closeLabel={setIstatusCode200}/>
               <form className="text-[18px]" onSubmit={handleSubmit}>
                 <div className="mb-4">
                   <select
