@@ -1,8 +1,9 @@
 "use client";
 import React from "react";
-import Modal from "../components/Modal";
 import LinkButton from "../components/LinkButton";
 import DefaultButton from "../components/DefaultButton";
+import Modal from "../components/Modal";
+import ServiceForm from "./ServiceForm";
 
 export default function CheckServices() {
   // State hooks to control the visibility of the modals
@@ -10,7 +11,8 @@ export default function CheckServices() {
     React.useState(false);
   const [isInsuranceCoverageModalOpen, setIsInsuranceCoverageModalOpen] =
     React.useState(false);
-
+  const [isSubmissionSuccessfull, setIsSubmissionSuccessfull] =
+    React.useState(false);
   return (
     <>
       <div className="mt-4">
@@ -22,6 +24,7 @@ export default function CheckServices() {
           clickHandler={() => {
             setIsSurgeryCostModalOpen(true);
             setIsInsuranceCoverageModalOpen(false);
+            setIsSubmissionSuccessfull(false);
           }}
         />
         <DefaultButton
@@ -29,25 +32,34 @@ export default function CheckServices() {
           clickHandler={() => {
             setIsInsuranceCoverageModalOpen(true);
             setIsSurgeryCostModalOpen(false);
+            setIsSubmissionSuccessfull(false);
           }}
           className="text-white !bg-blue-700 hover:!bg-blue-800"
         />
-        {/* Modal to check surgery cost */}
         <Modal
           isOpen={isSurgeryCostModalOpen}
           setIsOpen={setIsSurgeryCostModalOpen}
           modalHeading="Check Surgery Cost"
-          buttonLable="Check Now"
-          queryType="surgery"
-        />
-        {/* Modal to check insurance coverage */}
+        >
+          <ServiceForm
+            queryType="surgery"
+            buttonLable="Check Now"
+            setIsSubmissionSuccessfull={setIsSubmissionSuccessfull}
+            isSubmissionSuccessfull={isSubmissionSuccessfull}
+          />
+        </Modal>
         <Modal
           isOpen={isInsuranceCoverageModalOpen}
           setIsOpen={setIsInsuranceCoverageModalOpen}
           modalHeading="Check Insurance Coverage"
-          buttonLable="Check Coverage"
-          queryType="insurance"
-        />
+        >
+          <ServiceForm
+            queryType="insurance"
+            buttonLable="Check Coverage"
+            setIsSubmissionSuccessfull={setIsSubmissionSuccessfull}
+            isSubmissionSuccessfull={isSubmissionSuccessfull}
+          />
+        </Modal>
       </div>
     </>
   );
