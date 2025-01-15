@@ -3,13 +3,15 @@ import React from "react";
 import Card from "../components/Card";
 import SubmissionSuccess from "../components/SubmissionSuccess";
 import Spinner from "../components/Spinner";
-import { DOCTOR } from "../utils/Constants";
+import { DOCTOR, HOSPITAL } from "../utils/Constants";
 import LinkButton from "../components/LinkButton";
 
 export default function BookAppoinmentPage() {
+  // State hooks to manage loading, form submission status, errors and form data
   const [loading, setLoading] = React.useState(false);
   const [isSubmissionSuccessfull, setIsSubmissionSuccessfull] =
     React.useState(false);
+  const [errors, setErrors] = React.useState({});
   const [formValues, setFormValues] = React.useState({
     userType: DOCTOR,
     name: "",
@@ -22,10 +24,12 @@ export default function BookAppoinmentPage() {
     hospitalNumber: "",
     departments: "",
   });
-  const [errors, setErrors] = React.useState({});
 
+  // Function to validate form fields based on the userType (Doctor/Hospital)
   const validate = (values) => {
     const errors = {};
+
+    // Validation for Doctor user type
     if (values.userType === DOCTOR) {
       if (!values.name) {
         errors.name = "Required field";
@@ -43,7 +47,6 @@ export default function BookAppoinmentPage() {
         errors.mobile =
           "Enter a valid 10-digit Mobile number starting with 6-9";
       } else if (/^(\d)\1{9}$/.test(values.mobile)) {
-        // Check for repeated digits like 1111111111
         errors.mobile = "Mobile number cannot have all digits the same";
       }
       if (!values.experience) {
@@ -52,7 +55,10 @@ export default function BookAppoinmentPage() {
       if (!values.speciality) {
         errors.speciality = "Required field";
       }
-    } else if (values.userType === "hospital") {
+    }
+
+    // Validation for Hospital user type
+    else if (values.userType === HOSPITAL) {
       if (!values.hospitalName) {
         errors.hospitalName = "Required field";
       }
@@ -69,6 +75,7 @@ export default function BookAppoinmentPage() {
     return errors;
   };
 
+  // Handle changes in form fields
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormValues({
@@ -76,6 +83,7 @@ export default function BookAppoinmentPage() {
       [name]: value,
     });
 
+    // Clear any error messages when the user starts typing
     if (errors[name]) {
       setErrors((prevErrors) => ({
         ...prevErrors,
@@ -84,18 +92,23 @@ export default function BookAppoinmentPage() {
     }
   };
 
+  // Handle form submission and validation
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // Validate form data before submitting
     const validationErrors = validate(formValues);
     setErrors(validationErrors);
 
+    // If no validation errors, proceed with form submission (generally for making API call)
     if (Object.keys(validationErrors).length === 0) {
       setLoading(true);
       setTimeout(() => {
         setLoading(false);
         setIsSubmissionSuccessfull(true);
       }, 500);
+
+      // Reset the form after successfull submission
       setFormValues({
         name: "",
         email: "",
@@ -110,6 +123,7 @@ export default function BookAppoinmentPage() {
     }
   };
 
+  // Handle user type selection (Doctor or Hospital)
   const handleUserTypeChange = (e) => {
     const newUserType = e.target.value;
     setFormValues((prevFormData) => {
@@ -132,7 +146,7 @@ export default function BookAppoinmentPage() {
             };
       return { ...prevFormData, ...resetData };
     });
-    setErrors({});
+    setErrors({}); // Clear errors on user type change
   };
 
   return (
@@ -155,7 +169,7 @@ export default function BookAppoinmentPage() {
                     value={formValues.userType}
                   >
                     <option value={DOCTOR}>Doctor</option>
-                    <option value="hospital">Hospital</option>
+                    <option value={HOSPITAL}>Hospital</option>
                   </select>
                 </div>
                 {formValues.userType === DOCTOR ? (

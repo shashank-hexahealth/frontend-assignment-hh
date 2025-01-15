@@ -2,6 +2,7 @@
 import React from "react";
 import Modal from "../components/Modal";
 import LinkButton from "../components/LinkButton";
+import DefaultButton from "../components/DefaultButton";
 
 export default function CheckServices() {
   const [isSurgeryCostModalOpen, setIsSurgeryCostModalOpen] =
@@ -15,25 +16,21 @@ export default function CheckServices() {
         <LinkButton navigateTo="/" label="Dashboard" />
       </div>
       <div className="flex gap-4 items-center justify-center mb-8">
-        <button
-          className="bg-cyan-300 hover:bg-cyan-400 rounded-lg px-5 py-2.5 text-center"
-          onClick={() => {
+        <DefaultButton
+          label="Check Surgery Cost"
+          clickHandler={() => {
             setIsSurgeryCostModalOpen(true);
             setIsInsuranceCoverageModalOpen(false);
           }}
-        >
-          Check Surgery Cost
-        </button>
-        <button
-          className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg px-5 py-2.5 text-center"
-          type="button"
-          onClick={() => {
+        />
+        <DefaultButton
+          label="Check Insurance Coverage"
+          clickHandler={() => {
             setIsInsuranceCoverageModalOpen(true);
             setIsSurgeryCostModalOpen(false);
           }}
-        >
-          Check Insurance Coverage
-        </button>
+          className="text-white !bg-blue-700 hover:!bg-blue-800"
+        />
         <Modal
           isOpen={isSurgeryCostModalOpen}
           setIsOpen={setIsSurgeryCostModalOpen}
