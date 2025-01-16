@@ -319,7 +319,7 @@ export default function BookAppoinmentPage() {
                   <button
                     disabled={loading}
                     type="submit"
-                    className={`w-96 rounded px-5 py-2.5 mt-4 ${
+                    className={`w-[18rem] sm:w-96 rounded px-5 py-2.5 mt-4 ${
                       loading ? "bg-teal-300" : "bg-teal-400 hover:bg-teal-500"
                     }`}
                   >

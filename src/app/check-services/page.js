@@ -18,7 +18,7 @@ export default function CheckServices() {
       <div className="mt-4">
         <LinkButton navigateTo="/" label="Dashboard" />
       </div>
-      <div className="flex gap-4 items-center justify-center mb-8">
+      <div className="flex flex-col sm:flex-row sm:gap-6 items-center justify-center mb-8 px-4 sm:px-8 mt-6">
         <DefaultButton
           label="Check Surgery Cost"
           clickHandler={() => {
@@ -26,6 +26,7 @@ export default function CheckServices() {
             setIsInsuranceCoverageModalOpen(false);
             setIsSubmissionSuccessfull(false);
           }}
+          className="w-full sm:w-auto mb-4 sm:mb-0 max-w-xs"
         />
         <DefaultButton
           label="Check Insurance Coverage"
@@ -34,7 +35,7 @@ export default function CheckServices() {
             setIsSurgeryCostModalOpen(false);
             setIsSubmissionSuccessfull(false);
           }}
-          className="text-white !bg-blue-700 hover:!bg-blue-800"
+          className="text-white !bg-blue-700 hover:!bg-blue-800 w-full sm:w-auto max-w-xs"
         />
         <Modal
           isOpen={isSurgeryCostModalOpen}
